@@ -191,7 +191,7 @@ public class Komande {
     }
 
     public void vlastitaFunkcionalnost() {
-        System.out.println("KOMANDA VLASTITA FUNKCIONALNOST - CHAIN OF RESPONSIBILITY");
+        System.out.println("KOMANDA VLASTITA FUNKCIONALNOST KREĆE");
 
     }
 
