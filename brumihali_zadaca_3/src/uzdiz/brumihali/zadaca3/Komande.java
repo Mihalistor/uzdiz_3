@@ -66,8 +66,10 @@ public class Komande {
 
     public void ispisMjesta(Integer id) {
         System.out.println("KOMANDA ISPIS MJESTA");
+        Boolean postoji = false;
         for (Mjesto mjesto : listaMjesta) {
             if (mjesto.getIdMjesta().equals(id)) {
+                postoji = true;
                 System.out.println("");
                 System.out.println(String.format("|%-104s|", "============================================= ISPIS MJESTA =================================================="));
                 System.out.println(String.format("|%-45s|%-15s|%-15s|%-15s|%-15s|", "Naziv mjesta", "ID mjesta", "Tip mjesta", "Broj senzora", "Broj aktuatora"));
@@ -102,13 +104,19 @@ public class Komande {
                 }
             }
         }
+        if (!postoji) {
+            System.out.println("Ne postoji trazeno mjesto s tim ID-em");
+        }
+        System.out.println("");
     }
 
     public void ispisSenzora(Integer id) {
         System.out.println("KOMANDA ISPIS SENZORA");
+        Boolean postoji = false;
         for (Mjesto mjesto : listaMjesta) {
             for (Senzor s : mjesto.getSenzori()) {
                 if (s.getIdSenzora().equals(id)) {
+                    postoji = true;
                     System.out.println("");
                     System.out.println(String.format("|%-143s|", "-----------------------------------------------------------------------------------------------------------------------------------------------"));
                     System.out.println(String.format("|%-143s|", "MJESTO: " + mjesto.getNazivMjesta()));
@@ -120,19 +128,24 @@ public class Komande {
                     } else {
                         System.out.println(String.format("|%-40s|%15s|%15s|%9s|%9s|%16s|%12s|%-20s|", s.getNazivSenzora(), s.getIdSenzora(), s.getStatusSenzora(), s.getMinVrijednostSenzora(), s.getMaxVrijednostSenzora(), s.getVrijednostSenzora(), s.getBrojGreski(), "AKTIVAN"));
                     }
+                    System.out.println(String.format("|%-143s|", "-----------------------------------------------------------------------------------------------------------------------------------------------"));
                     break;
                 }
             }
         }
-        System.out.println(String.format("|%-143s|", "-----------------------------------------------------------------------------------------------------------------------------------------------"));
+        if (!postoji) {
+            System.out.println("Ne postoji trazeni senzor s tim ID-em");
+        }
         System.out.println("");
     }
 
     public void ispisAktuatora(Integer id) {
         System.out.println("KOMANDA ISPIS AKTUATORA");
+        Boolean postoji = false;
         for (Mjesto mjesto : listaMjesta) {
             for (Aktuator a : mjesto.getAktuatori()) {
                 if (a.getIdAktuatora().equals(id)) {
+                    postoji = true;
                     String popisSenzora = "";
                     for (Senzor s : a.getPopisSenzora()) {
                         popisSenzora += (s.getIdSenzora() + ", ");
@@ -149,10 +162,14 @@ public class Komande {
                     } else {
                         System.out.println(String.format("|%-40s|%15s|%18s|%9s|%9s|%13s|%30s|%12s|%-20s|", a.getNazivAktuatora(), a.getIdAktuatora(), a.getStatusAktuatora(), a.getMinVrijednostAktuatora(), a.getMaxVrijednostAktuatora(), a.getVrijednostAktuatora().intValue(), popisSenzora, a.getBrojGreski(), "AKTIVAN"));
                     }
+                    System.out.println(String.format("|%-170s|", "------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"));
+                    break;
                 }
             }
         }
-        System.out.println(String.format("|%-170s|", "------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"));
+        if (!postoji) {
+            System.out.println("Ne postoji trazeni aktuator s tim ID-em");
+        }
         System.out.println("");
     }
 
@@ -168,13 +185,13 @@ public class Komande {
 
     public void vratiPodatke() {
         System.out.println("KOMANDA VRAĆANJE PODATAKA");
-        if(spremljenaListaMjesta.size()==0){
+        if (spremljenaListaMjesta.size() == 0) {
             System.out.println("Potrebno je prvo spremiti podatke da bi ih vratili");
         } else {
             listaMjesta.clear();
-        listaMjesta = new ArrayList<>(spremljenaListaMjesta);
-        System.out.println("Podaci o mjestima i njihovim uređajima su vraćeni");
-        }        
+            listaMjesta = new ArrayList<>(spremljenaListaMjesta);
+            System.out.println("Podaci o mjestima i njihovim uređajima su vraćeni");
+        }
     }
 
     public void izvrsiDretvu(int brojCiklusa) {
@@ -186,7 +203,11 @@ public class Komande {
             provjeraMjesta.setListaMjesta(listaMjesta);
             provjeraMjesta.setBrojCiklusa(brojCiklusa);
             provjeraMjesta.start();
-            System.out.println("Dretva je završila s radom");
+            try {
+                provjeraMjesta.join();
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Komande.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
@@ -215,20 +236,20 @@ public class Komande {
         }
         System.exit(0);
     }
-    
-    public void help(){
-        System.out.println("POMOĆ KOD UPISA KOMANDI");
-        System.out.println("M x - ispis podataka mjesta x\n" +
-            "S x - ispis podataka senzora x\n" +
-            "A x - ispis podataka aktuatora x\n" +
-            "S - ispis statistike\n" +
-            "SP - spremi podatke (mjesta, uređaja)\n" +
-            "VP - vrati spremljene podatke (mjesta, uređaja)\n" +
-            "C n - izvršavanje n ciklusa dretve (1-100)\n" +
-            "VF [argumenti] - izvršavanje vlastite funkcionalnosti, po potrebni mogući su argumenti\n" +
-            "PI n - prosječni % ispravnosti uređaja (0-100)\n" +
-            "H - pomoć, ispis dopuštenih komandi i njihov opis\n" +
-            "I - izlaz.");
+
+    public void help() {
+        System.out.println("POMOC KOD UPISA KOMANDI");
+        System.out.println("M x - ispis podataka mjesta x\n"
+                + "S x - ispis podataka senzora x\n"
+                + "A x - ispis podataka aktuatora x\n"
+                + "S - ispis statistike\n"
+                + "SP - spremi podatke (mjesta, uredaja)\n"
+                + "VP - vrati spremljene podatke (mjesta, uredaja)\n"
+                + "C n - izvrsavanje n ciklusa dretve (1-100)\n"
+                + "VF [argumenti] - izvrsavanje vlastite funkcionalnosti, po potrebni moguci su argumenti\n"
+                + "PI n - prosjecni % ispravnosti uredaja (0-100)\n"
+                + "H - pomoc, ispis dopustenih komandi i njihov opis\n"
+                + "I - izlaz.");
     }
 
     public List<Mjesto> getListaMjesta() {
