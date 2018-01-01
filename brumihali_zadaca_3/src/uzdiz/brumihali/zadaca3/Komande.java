@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import uzdiz.brumihali.zadaca3.memento.Caretaker;
+import uzdiz.brumihali.zadaca3.memento.SpremistePodataka;
 import uzdiz.brumihali.zadaca3.podaci.Aktuator;
 import uzdiz.brumihali.zadaca3.podaci.Mjesto;
 import uzdiz.brumihali.zadaca3.podaci.Senzor;
@@ -20,8 +22,10 @@ import uzdiz.brumihali.zadaca3.podaci.Senzor;
  */
 public class Komande {
 
-    private List<Mjesto> listaMjesta;
+    private List<Mjesto> listaMjesta = new ArrayList<>();
     private static List<Mjesto> spremljenaListaMjesta = new ArrayList<>();
+    Caretaker caretaker = new Caretaker();
+    SpremistePodataka sp = new SpremistePodataka();
 
     public Komande(List<Mjesto> listaMjesta) {
         this.listaMjesta = listaMjesta;
@@ -45,7 +49,7 @@ public class Komande {
         } else if (naredba.equals("S")) {
             ispisStatistike();
         } else if (naredba.equals("SP")) {
-            spremiPodatke();
+            spremiPodatke(new ArrayList<>(listaMjesta));
         } else if (naredba.equals("VP")) {
             vratiPodatke();
         } else if (naredba.equals("C")) {
@@ -177,14 +181,22 @@ public class Komande {
         System.out.println("KOMANDA ISPIS STATISTIKE");
     }
 
-    public void spremiPodatke() {
+    public void spremiPodatke(List<Mjesto> lista) {
         System.out.println("KOMANDA SPREMANJE PODATAKA");
-        spremljenaListaMjesta = new ArrayList<>(listaMjesta);
+        List<Mjesto> l = new ArrayList<>(lista);
+        lista.get(0).setIdMjesta(2000);
+        System.out.println("id listaMjesta: " + lista.get(0).getIdMjesta());
+        System.out.println("id l: " + l.get(0).getIdMjesta());
+        sp.setLista(lista);
+        caretaker.addMemento(sp.saveToMemento());
         System.out.println("Podaci o mjestima i njihovim uređajima su spremljeni");
     }
 
     public void vratiPodatke() {
         System.out.println("KOMANDA VRAĆANJE PODATAKA");
+        sp.restoreFromMemento(caretaker.getMemento(0));
+
+        /*
         if (spremljenaListaMjesta.size() == 0) {
             System.out.println("Potrebno je prvo spremiti podatke da bi ih vratili");
         } else {
@@ -192,6 +204,7 @@ public class Komande {
             listaMjesta = new ArrayList<>(spremljenaListaMjesta);
             System.out.println("Podaci o mjestima i njihovim uređajima su vraćeni");
         }
+         */
     }
 
     public void izvrsiDretvu(int brojCiklusa) {
