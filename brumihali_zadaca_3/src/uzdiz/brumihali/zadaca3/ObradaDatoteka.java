@@ -33,6 +33,7 @@ public class ObradaDatoteka {
     String delimiter = ";";
     List<Aktuator> pomocnaAktuatori = new ArrayList<>();
     ProvjeraMjesta provjeraMjesta = new ProvjeraMjesta();
+    Statistika statistika = Statistika.getInstance();
 
     public List<Mjesto> dohvatiMjesta(String nazivDatoteke) {
         try (BufferedReader br = new BufferedReader(new FileReader(nazivDatoteke))) {
@@ -44,8 +45,10 @@ public class ObradaDatoteka {
                     String[] zapis = linija.split(delimiter);
                     if (Integer.parseInt(zapis[2]) != 1 && Integer.parseInt(zapis[2]) != 0) {
                         System.out.println("CSV Mjesto nije ispravno - ne odgovara tip (0 ili 1)");
+                        statistika.setBrojNeispravnihMjesta(statistika.getBrojNeispravnihMjesta()+1);
                     } else if (listaIdMjesta.contains(Integer.parseInt(zapis[0]))) {
                         System.out.println("Mjesto s ID: '" + zapis[0] + "' vec postoji");
+                        statistika.setBrojNeispravnihMjesta(statistika.getBrojNeispravnihMjesta()+1);
                     } else {
                         MjestoBuilder mb = new MjestoBuilderImpl();
                         mb.setIdMjesta(Integer.parseInt(zapis[0]));
@@ -55,9 +58,11 @@ public class ObradaDatoteka {
                         mb.setBrojAktuatoraMjesta(Integer.parseInt(zapis[4]));
                         listaMjesta.add(mb.build());
                         listaIdMjesta.add(Integer.parseInt(zapis[0]));
+                        statistika.setBrojIspravnihMjesta(statistika.getBrojIspravnihMjesta()+1);
                     }
                 } else {
                     System.out.println("CSV Mjesto nije ispravno");
+                    statistika.setBrojNeispravnihMjesta(statistika.getBrojNeispravnihMjesta()+1);
                 }
             }
         } catch (IOException ex) {
@@ -79,8 +84,10 @@ public class ObradaDatoteka {
                     String[] zapis = linija.split(delimiter);
                     if (listaIdModelaSenzora.contains(Integer.parseInt(zapis[0]))) {
                         System.out.println("Senzor s ID: '" + zapis[0] + "' vec postoji");
+                        statistika.setBrojNeispravnihSenzora(statistika.getBrojNeispravnihSenzora()+1);
                     } else if (Integer.parseInt(zapis[2]) != 0 && Integer.parseInt(zapis[2]) != 1 && Integer.parseInt(zapis[2]) != 2 || Integer.parseInt(zapis[3]) != 0 && Integer.parseInt(zapis[3]) != 1 && Integer.parseInt(zapis[3]) != 2 && Integer.parseInt(zapis[3]) != 3) {
                         System.out.println("CSV za Senzor nije ispravan");
+                        statistika.setBrojNeispravnihSenzora(statistika.getBrojNeispravnihSenzora()+1);
                     } else {
                         SenzorBuilder sb = new SenzorBuilderImpl();
                         sb.setIdModelaSenzora(Integer.parseInt(zapis[0]));
@@ -93,10 +100,12 @@ public class ObradaDatoteka {
                         listaIdModelaSenzora.add(Integer.parseInt(zapis[0]));
                         Senzor s = sb.build();
                         listaSenzora.add(new Senzor(s));
+                        statistika.setBrojIspravnihSenzora(statistika.getBrojIspravnihSenzora()+1);
                     }
                 } else {
                     String[] zapis = linija.split(delimiter);
                     System.out.println("CSV Senzor '" + zapis[1] + "' s ID: " + zapis[0] + " nije ispravan te se odbacuje");
+                    statistika.setBrojNeispravnihSenzora(statistika.getBrojNeispravnihSenzora()+1);
                 }
 
             }
@@ -119,8 +128,10 @@ public class ObradaDatoteka {
                     String[] zapis = linija.split(delimiter);
                     if (listaIdModelaAktuatora.contains(Integer.parseInt(zapis[0]))) {
                         System.out.println("Aktuator s ID: '" + zapis[0] + "' vec postoji");
+                        statistika.setBrojNeispravnihAktuatora(statistika.getBrojNeispravnihAktuatora()+1);
                     } else if (Integer.parseInt(zapis[2]) != 0 && Integer.parseInt(zapis[2]) != 1 && Integer.parseInt(zapis[2]) != 2 || Integer.parseInt(zapis[3]) != 0 && Integer.parseInt(zapis[3]) != 1 && Integer.parseInt(zapis[3]) != 2 && Integer.parseInt(zapis[3]) != 3) {
                         System.out.println("CSV za Aktuator nije ispravan");
+                        statistika.setBrojNeispravnihAktuatora(statistika.getBrojNeispravnihAktuatora()+1);
                     } else {
                         AktuatorBuilder ab = new AktuatorBuilderImpl();
                         ab.setIdModelaAktuatora(Integer.parseInt(zapis[0]));
@@ -133,10 +144,12 @@ public class ObradaDatoteka {
                         listaIdModelaAktuatora.add(Integer.parseInt(zapis[0]));
                         Aktuator a = ab.build();
                         listaAktuatora.add(new Aktuator(a));
+                        statistika.setBrojIspravnihAktuatora(statistika.getBrojIspravnihAktuatora()+1);
                     }
                 } else {
                     String[] zapis = linija.split(delimiter);
                     System.out.println("CSV Aktuator '" + zapis[1] + "' s ID: " + zapis[0] + " nije ispravan te se odbacuje");
+                    statistika.setBrojNeispravnihAktuatora(statistika.getBrojNeispravnihAktuatora()+1);
                 }
             }
         } catch (IOException ex) {
@@ -172,18 +185,22 @@ public class ObradaDatoteka {
                                         List<Senzor> novaLista = new ArrayList<>(listaMjesta.get(index).getSenzori());
                                         novaLista.add(senzorek);
                                         listaMjesta.get(index).setSenzori(novaLista);
-                                        provjeraMjesta.getListaIdUredaja().add(Integer.parseInt(zapis[4]));                                        
+                                        provjeraMjesta.getListaIdUredaja().add(Integer.parseInt(zapis[4]));
+                                        statistika.setBrojDodjeljenihSenzora(statistika.getBrojDodjeljenihSenzora()+1);                                        
                                         break;
                                     } else {
                                         System.out.println("Senzor '" + senzor.getNazivSenzora() + "' s tipom: " + senzor.getTipSenzora() + " ne odgovara mjestu '" + listaMjesta.get(index).getNazivMjesta() + "' koji ima tip: " + listaMjesta.get(index).getTipMjesta());
+                                        statistika.setBrojNeDodjeljenihSenzora(statistika.getBrojNeDodjeljenihSenzora()+1);
                                     }
                                 }
                             }
                             if (!postoji) {
                                 System.out.println("Senzor s ID modela: " + zapis[3] + " ne postoji te zbog toga nije dodan mjestu");
+                                statistika.setBrojNeDodjeljenihSenzora(statistika.getBrojNeDodjeljenihSenzora()+1);
                             }
                         } else {
                             System.out.println("Senzor s ID modela: " + zapis[3] + " i ID: " + zapis[4] + " nije dodan mjestu jer vise nema mjesta na toj lokaciji");
+                            statistika.setBrojNeDodjeljenihSenzora(statistika.getBrojNeDodjeljenihSenzora()+1);
                         }
 
                     } else if (zapis[0].equals("0") && zapis[2].equals("1")) {
@@ -199,17 +216,21 @@ public class ObradaDatoteka {
                                         List<Aktuator> novaLista = new ArrayList<>(listaMjesta.get(index).getAktuatori());
                                         novaLista.add(aktuatorek);
                                         listaMjesta.get(index).setAktuatori(novaLista);
+                                        statistika.setBrojDodjeljenihAktuatora(statistika.getBrojDodjeljenihAktuatora()+1);
                                         break;
                                     } else {
                                         System.out.println("Aktuator '" + aktuator.getNazivAktuatora() + "' s tipom: " + aktuator.getTipAktuatora() + " ne odgovara mjestu '" + listaMjesta.get(index).getNazivMjesta() + "' koji ima tip: " + listaMjesta.get(index).getTipMjesta());
+                                        statistika.setBrojNeDodjeljenihAktuatora(statistika.getBrojNeDodjeljenihAktuatora()+1);
                                     }
                                 }
                             }
                             if (!postoji) {
                                 System.out.println("Aktuator s ID modela: " + zapis[3] + " ne postoji te zbog toga nije dodan mjestu");
+                                statistika.setBrojNeDodjeljenihAktuatora(statistika.getBrojNeDodjeljenihAktuatora()+1);
                             }
                         } else {
                             System.out.println("Aktuator s ID modela: " + zapis[3] + " i ID: " + zapis[4] + " nije dodan mjestu jer vise nema mjesta na toj lokaciji");
+                            statistika.setBrojNeDodjeljenihAktuatora(statistika.getBrojNeDodjeljenihAktuatora()+1);
                         }
                     }
                 }
@@ -243,6 +264,7 @@ public class ObradaDatoteka {
                                             senzor.addObserver(aktuator);
                                             novi.add(senzor);                                           
                                             aktuator.setPopisSenzora(novi);
+                                            statistika.setBrojDodjeljenihSenzoraAktuatorima(statistika.getBrojDodjeljenihSenzoraAktuatorima()+1);
                                             break;
                                         } else {
                                             postojiSenzor = false;
@@ -250,6 +272,7 @@ public class ObradaDatoteka {
                                     }
                                     if (!postojiSenzor) {
                                         System.out.println("Nije moguce dodjeliti senzor koji ima ID: " + idSenzora + " aktuatoru. Senzor se ne nalazi u mjestu");
+                                        statistika.setBrojNeDodjeljenihSenzoraAktuatorima(statistika.getBrojNeDodjeljenihSenzoraAktuatorima()+1);
                                     }
                                 }
                             }
@@ -257,6 +280,7 @@ public class ObradaDatoteka {
                     }
                     if (!postojiAktuator) {
                         System.out.println("Nije moguce dodjeliti senzore aktuatoru koji ima ID: " + zapis[1] + ". Aktuator se ne nalazi u mjestu");
+                        statistika.setBrojNeDodjeljenihSenzoraAktuatorima(statistika.getBrojNeDodjeljenihSenzoraAktuatorima()+1);
                     }
                 }
             }

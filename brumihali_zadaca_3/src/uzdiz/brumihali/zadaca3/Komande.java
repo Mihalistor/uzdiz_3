@@ -23,7 +23,7 @@ import uzdiz.brumihali.zadaca3.podaci.Senzor;
 public class Komande {
 
     private List<Mjesto> listaMjesta = new ArrayList<>();
-    private static List<Mjesto> spremljenaListaMjesta = new ArrayList<>();
+    Statistika statistika = Statistika.getInstance();
     Caretaker caretaker = new Caretaker();
     SpremistePodataka sp = new SpremistePodataka();
 
@@ -32,6 +32,7 @@ public class Komande {
     }
 
     public void izvrsiKomande(String komanda) {
+        statistika.setBrojIzvrsenihKomandi(statistika.getBrojIzvrsenihKomandi()+1);
         String naredba;
         int vrijednost = 0;
         if (komanda.contains(" ")) {
@@ -179,15 +180,36 @@ public class Komande {
 
     public void ispisStatistike() {
         System.out.println("KOMANDA ISPIS STATISTIKE");
+        System.out.println("1. Broj ispravnih mjesta iz CSV datoteke: " + statistika.getBrojIspravnihMjesta());
+        System.out.println("2. Broj neispravnih mjesta iz CSV datoteke: " + statistika.getBrojNeispravnihMjesta());
+        System.out.println("3. Broj ispravnih senzora iz CSV datoteke: " + statistika.getBrojIspravnihSenzora());
+        System.out.println("4. Broj neispravnih senzora iz CSV datoteke: " + statistika.getBrojNeispravnihSenzora());
+        System.out.println("5. Broj ispravnih aktuatora iz CSV datoteke: " + statistika.getBrojIspravnihAktuatora());
+        System.out.println("6. Broj neispravnih aktuatora iz CSV datoteke: " + statistika.getBrojNeispravnihAktuatora());      
+        System.out.println("7. Broj ispravnih dodjela senzora mjestima: " + statistika.getBrojDodjeljenihSenzora());
+        System.out.println("8. Broj neispravnih dodjela senzora mjestima: " + statistika.getBrojNeDodjeljenihSenzora());
+        System.out.println("9. Broj ispravnih dodjela akutuatora mjestima: " + statistika.getBrojDodjeljenihAktuatora());
+        System.out.println("10. Broj neispravnih dodjela akutuatora mjestima: " + statistika.getBrojNeDodjeljenihAktuatora());
+        System.out.println("11. Broj ispravnih dodjela senzora aktuatorima: " + statistika.getBrojDodjeljenihSenzoraAktuatorima());
+        System.out.println("12. Broj neispravnih dodjela senzora aktuatorima: " + statistika.getBrojNeDodjeljenihSenzoraAktuatorima()); 
+        System.out.println("13. Broj zamjena senzora: " + statistika.getZamjenaSenzora());
+        System.out.println("14. Broj zamjena aktuatora: " + statistika.getZamjenaAktuatora());
+        System.out.println("15. Broj učitanih vrijednosti senzora: " + statistika.getVrijednostiSenzora());
+        System.out.println("16. Broj učitanih vrijednosti aktuatora: " + statistika.getVrijednostiAktuatora());
+        System.out.println("17. Broj poslanih inicijalizacijskih poruka: " + statistika.getBrojIniPoruka());
+        System.out.println("18. Broj generiranih brojeva: " + statistika.getBrojGeneriranihBrojeva());
+        System.out.println("19. Broj izvrsenih komandi: " + statistika.getBrojIzvrsenihKomandi());
+        System.out.println("20. Vrijeme pokretanja programa: " + statistika.getVrijemePokretanja());
     }
 
     public void spremiPodatke(List<Mjesto> lista) {
         System.out.println("KOMANDA SPREMANJE PODATAKA");
-        List<Mjesto> l = new ArrayList<>(lista);
-        lista.get(0).setIdMjesta(2000);
-        System.out.println("id listaMjesta: " + lista.get(0).getIdMjesta());
-        System.out.println("id l: " + l.get(0).getIdMjesta());
-        sp.setLista(lista);
+        List<Mjesto> l = new ArrayList<>();
+        for (Mjesto mjesto : lista) {
+            Mjesto m = new Mjesto(mjesto);
+            l.add(m);
+        }
+        sp.setLista(l);
         caretaker.addMemento(sp.saveToMemento());
         System.out.println("Podaci o mjestima i njihovim uređajima su spremljeni");
     }
@@ -195,16 +217,7 @@ public class Komande {
     public void vratiPodatke() {
         System.out.println("KOMANDA VRAĆANJE PODATAKA");
         sp.restoreFromMemento(caretaker.getMemento(0));
-
-        /*
-        if (spremljenaListaMjesta.size() == 0) {
-            System.out.println("Potrebno je prvo spremiti podatke da bi ih vratili");
-        } else {
-            listaMjesta.clear();
-            listaMjesta = new ArrayList<>(spremljenaListaMjesta);
-            System.out.println("Podaci o mjestima i njihovim uređajima su vraćeni");
-        }
-         */
+        System.out.println("Podaci o mjestima i njihovim uređajima su vraceni");
     }
 
     public void izvrsiDretvu(int brojCiklusa) {

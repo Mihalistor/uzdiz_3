@@ -5,13 +5,11 @@
  */
 package uzdiz.brumihali.zadaca3;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
-import uzdiz.brumihali.zadaca3.observer.Observer;
-import uzdiz.brumihali.zadaca3.observer.ObserverImpl;
-import uzdiz.brumihali.zadaca3.observer.Subject;
-import uzdiz.brumihali.zadaca3.observer.SubjectImpl;
 import uzdiz.brumihali.zadaca3.podaci.Aktuator;
 import uzdiz.brumihali.zadaca3.podaci.Mjesto;
 import uzdiz.brumihali.zadaca3.podaci.Senzor;
@@ -24,6 +22,11 @@ public class KonfiguracijaSustava {
 
     public static void main(String[] args) {
         GeneratorBrojeva generatorBrojeva = GeneratorBrojeva.getInstance();
+        Statistika statistika = Statistika.getInstance();
+        SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");//dd/MM/yyyy
+        Date trenutnoVrijeme = new Date();
+        String datum = format.format(trenutnoVrijeme);
+        statistika.setVrijemePokretanja(datum);
         int brojRedaka = -1;
         int brojStupaca = -1;
         int brojRedakaUpis = -1;
@@ -140,7 +143,7 @@ public class KonfiguracijaSustava {
         inicijalizacijaSustava.inicijalizirajSve(listaMjesta);
 
         Komande komande = new Komande(listaMjesta);
- /*       String komanda0 = "M 2";
+        /*       String komanda0 = "M 2";
         String komanda1 = "S 1023";
         String komanda2 = "A 1031";
         String komanda3 = "S";

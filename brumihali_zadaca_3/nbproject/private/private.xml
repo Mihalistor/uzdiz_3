@@ -4,8 +4,12 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/E:/uzdiz/uzdiz_3/brumihali_zadaca_3/src/uzdiz/brumihali/zadaca3/ProvjeraMjesta.java</file>
+            <file>file:/E:/uzdiz/uzdiz_3/brumihali_zadaca_3/src/uzdiz/brumihali/zadaca3/memento/Caretaker.java</file>
+            <file>file:/E:/uzdiz/uzdiz_3/brumihali_zadaca_3/src/uzdiz/brumihali/zadaca3/podaci/Mjesto.java</file>
             <file>file:/E:/uzdiz/uzdiz_3/brumihali_zadaca_3/src/uzdiz/brumihali/zadaca3/KonfiguracijaSustava.java</file>
+            <file>file:/E:/uzdiz/uzdiz_3/brumihali_zadaca_3/src/uzdiz/brumihali/zadaca3/memento/SpremistePodataka.java</file>
             <file>file:/E:/uzdiz/uzdiz_3/brumihali_zadaca_3/src/uzdiz/brumihali/zadaca3/Komande.java</file>
+            <file>file:/E:/uzdiz/uzdiz_3/brumihali_zadaca_3/src/uzdiz/brumihali/zadaca3/ObradaDatoteka.java</file>
             <file>file:/E:/uzdiz/uzdiz_3/brumihali_zadaca_3/src/uzdiz/brumihali/zadaca3/podaci/Senzor.java</file>
         </group>
     </open-files>

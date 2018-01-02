@@ -18,7 +18,8 @@ public class InicijalizacijaSustava {
 
     GeneratorBrojeva generatorBrojeva = GeneratorBrojeva.getInstance();
     public static int prosjecnaIspravnost;
-
+    Statistika statistika = Statistika.getInstance();
+    
     public void inicijalizirajSve(List<Mjesto> listaMjesta) {
         int statusSenzora = 0;
         int statusAktuatora = 0;
@@ -77,6 +78,7 @@ public class InicijalizacijaSustava {
 
     public void iniPoruka(String uredaj) {
         System.out.println(String.format("|%-61s|", "Ini poruka za '" + uredaj + "'"));
+        statistika.setBrojIniPoruka(statistika.getBrojIniPoruka()+1);
     }
 
     public int odgovorPoruka() {

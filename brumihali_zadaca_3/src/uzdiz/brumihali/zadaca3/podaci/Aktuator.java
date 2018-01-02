@@ -53,7 +53,7 @@ public class Aktuator implements Cloneable, Observer{
         this.komentarAktuatora = aktuator.getKomentarAktuatora();
         this.vrijednostAktuatora = aktuator.getVrijednostAktuatora();
         this.statusAktuatora = aktuator.getStatusAktuatora();
-        this.popisSenzora = aktuator.getPopisSenzora();
+        this.popisSenzora = new ArrayList<>(aktuator.getPopisSenzora());
         this.state = aktuator.getState();
        }
 

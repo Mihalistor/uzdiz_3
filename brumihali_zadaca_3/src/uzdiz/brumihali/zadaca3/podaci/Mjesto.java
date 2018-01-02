@@ -22,7 +22,18 @@ public class Mjesto implements Comparable<Mjesto> {
     private Integer brojAktuatora;
     private List<Senzor> senzori = new ArrayList<>();
     private List<Aktuator> aktuatori = new ArrayList<>();
-
+    
+    public Mjesto(){
+    }
+    
+    public Mjesto(Mjesto mjesto){
+        this.idMjesta = mjesto.getIdMjesta();
+        this.nazivMjesta = mjesto.getNazivMjesta();
+        this.brojSenzora = mjesto.getBrojSenzora();
+        this.brojAktuatora = mjesto.getBrojAktuatora();
+        this.senzori = new ArrayList<>(mjesto.getSenzori());
+        this.aktuatori = new ArrayList<>(mjesto.getAktuatori());
+    }
     public String getNazivMjesta() {
         return nazivMjesta;
     }

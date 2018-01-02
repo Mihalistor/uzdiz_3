@@ -13,9 +13,9 @@ import java.util.Random;
  */
 public class GeneratorBrojeva {
     private static GeneratorBrojeva instance = new GeneratorBrojeva();
-    //IspisDatoteka ispisDatoteka = new IspisDatoteka();
     public static int sjeme;
     Random generator = new Random(sjeme);
+    Statistika statistika = Statistika.getInstance();
 
     private GeneratorBrojeva() {
     }
@@ -29,15 +29,13 @@ public class GeneratorBrojeva {
     
     public int dajSlucaniBroj(int odBroja, int doBroja){
         int slucajniBroj = odBroja + generator.nextInt((doBroja - odBroja) + 1);
-        //System.out.println("Generiran slucajni INT Broj: " + slucajniBroj);
-        //ispisDatoteka.zapisiPoruku("Generiran slucajni INT broj " + Integer.toString(slucajniBroj));
+        statistika.setBrojGeneriranihBrojeva(statistika.getBrojGeneriranihBrojeva()+1);
         return slucajniBroj;
     }
 
     public float dajSlucaniBroj(float odBroja, float doBroja) {
         float slucajniBroj = odBroja + generator.nextFloat() * (doBroja - odBroja);
-        //System.out.println("Generiran slucajni FLOAT Broj: " + slucajniBroj);
-        //ispisDatoteka.zapisiPoruku("Generiran slucajni FLOAT broj " + Float.toString(slucajniBroj));
+        statistika.setBrojGeneriranihBrojeva(statistika.getBrojGeneriranihBrojeva()+1);
         return slucajniBroj;
     }
 }

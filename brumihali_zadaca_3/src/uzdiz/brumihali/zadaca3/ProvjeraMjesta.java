@@ -36,16 +36,7 @@ public class ProvjeraMjesta extends Thread implements Container {
 
     GeneratorBrojeva generatorBrojeva = GeneratorBrojeva.getInstance();
     InicijalizacijaSustava inicijalizacijaSustava = new InicijalizacijaSustava();
-/*
-    private ProvjeraMjesta() {
-    }
-
-    public static ProvjeraMjesta getInstance() {
-        if (instance == null) {
-            instance = new ProvjeraMjesta();
-        }
-        return instance;
-    }*/
+    Statistika statistika = Statistika.getInstance();
 
     @Override
     public void interrupt() {
@@ -121,7 +112,8 @@ public class ProvjeraMjesta extends Thread implements Container {
                     }                  
                     listaIdUredaja.add(listaIdUredaja.get(0) + 1);
                     inicijalizacijaSustava.inicijalizirajSenzor(noviSenzor);
-                    mjesto.getSenzori().add(new Senzor(noviSenzor));                   
+                    mjesto.getSenzori().add(new Senzor(noviSenzor)); 
+                    statistika.setZamjenaSenzora(statistika.getZamjenaSenzora()+1);
                     System.out.println(String.format("|%-61s|", "Senzor ID: " + s.getIdSenzora() + " - 3 greske - novi ID: " + noviSenzor.getIdSenzora()));
                     System.out.println(" - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -");
                     System.out.println("");
@@ -156,6 +148,7 @@ public class ProvjeraMjesta extends Thread implements Container {
                     listaIdUredaja.add(listaIdUredaja.get(0) + 1);
                     inicijalizacijaSustava.inicijalizirajAktuator(noviAktuator);
                     mjesto.getAktuatori().add(new Aktuator(noviAktuator));
+                    statistika.setZamjenaAktuatora(statistika.getZamjenaAktuatora()+1);
                     System.out.println(String.format("|%-61s|", "Aktuator ID: " + a.getIdAktuatora() + " - 3 greske - novi ID: " + noviAktuator.getIdAktuatora()));
                     System.out.println(" - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ");
                     System.out.println("");
@@ -202,6 +195,7 @@ public class ProvjeraMjesta extends Thread implements Container {
                 } else {
                     System.out.println(String.format("|%-40s|%15s|%15s|%9s|%9s|%16s|", s.getNazivSenzora(), s.getIdSenzora(), s.getStatusSenzora(), s.getMinVrijednostSenzora(), s.getMaxVrijednostSenzora(), s.getVrijednostSenzora()));
                 }
+                statistika.setVrijednostiSenzora(statistika.getVrijednostiSenzora()+1);
             }
         }
         System.out.println(String.format("|%-109s|", "============================================================================================================="));
@@ -301,6 +295,7 @@ public class ProvjeraMjesta extends Thread implements Container {
                 }
             }
         }
+        statistika.setVrijednostiAktuatora(statistika.getVrijednostiAktuatora()+1);
         for (Senzor s : mjesto.getSenzori()) {
             s.setState(false);
         }
