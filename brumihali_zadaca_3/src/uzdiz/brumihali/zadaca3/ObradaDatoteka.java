@@ -34,6 +34,7 @@ public class ObradaDatoteka {
     List<Aktuator> pomocnaAktuatori = new ArrayList<>();
     ProvjeraMjesta provjeraMjesta = new ProvjeraMjesta();
     Statistika statistika = Statistika.getInstance();
+    PrikazPrograma pp = PrikazPrograma.getInstance();
 
     public List<Mjesto> dohvatiMjesta(String nazivDatoteke) {
         try (BufferedReader br = new BufferedReader(new FileReader(nazivDatoteke))) {
@@ -44,10 +45,10 @@ public class ObradaDatoteka {
                 if (linija.split(delimiter).length == duljina) {
                     String[] zapis = linija.split(delimiter);
                     if (Integer.parseInt(zapis[2]) != 1 && Integer.parseInt(zapis[2]) != 0) {
-                        System.out.println("CSV Mjesto nije ispravno - ne odgovara tip (0 ili 1)");
+                        pp.prikazi("CSV Mjesto nije ispravno - ne odgovara tip (0 ili 1)");
                         statistika.setBrojNeispravnihMjesta(statistika.getBrojNeispravnihMjesta()+1);
                     } else if (listaIdMjesta.contains(Integer.parseInt(zapis[0]))) {
-                        System.out.println("Mjesto s ID: '" + zapis[0] + "' vec postoji");
+                        pp.prikazi("Mjesto s ID: '" + zapis[0] + "' vec postoji");
                         statistika.setBrojNeispravnihMjesta(statistika.getBrojNeispravnihMjesta()+1);
                     } else {
                         MjestoBuilder mb = new MjestoBuilderImpl();
@@ -61,12 +62,12 @@ public class ObradaDatoteka {
                         statistika.setBrojIspravnihMjesta(statistika.getBrojIspravnihMjesta()+1);
                     }
                 } else {
-                    System.out.println("CSV Mjesto nije ispravno");
+                    pp.prikazi("CSV Mjesto nije ispravno");
                     statistika.setBrojNeispravnihMjesta(statistika.getBrojNeispravnihMjesta()+1);
                 }
             }
         } catch (IOException ex) {
-            System.out.println("GRESKA KOD CITANJA DATOTEKE MJESTA");
+            pp.prikazi("GRESKA KOD CITANJA DATOTEKE MJESTA");
         }
         return listaMjesta;
     }
@@ -83,10 +84,10 @@ public class ObradaDatoteka {
                 if (linija.split(delimiter).length == duljina) {
                     String[] zapis = linija.split(delimiter);
                     if (listaIdModelaSenzora.contains(Integer.parseInt(zapis[0]))) {
-                        System.out.println("Senzor s ID: '" + zapis[0] + "' vec postoji");
+                        pp.prikazi("Senzor s ID: '" + zapis[0] + "' vec postoji");
                         statistika.setBrojNeispravnihSenzora(statistika.getBrojNeispravnihSenzora()+1);
                     } else if (Integer.parseInt(zapis[2]) != 0 && Integer.parseInt(zapis[2]) != 1 && Integer.parseInt(zapis[2]) != 2 || Integer.parseInt(zapis[3]) != 0 && Integer.parseInt(zapis[3]) != 1 && Integer.parseInt(zapis[3]) != 2 && Integer.parseInt(zapis[3]) != 3) {
-                        System.out.println("CSV za Senzor nije ispravan");
+                        pp.prikazi("CSV za Senzor nije ispravan");
                         statistika.setBrojNeispravnihSenzora(statistika.getBrojNeispravnihSenzora()+1);
                     } else {
                         SenzorBuilder sb = new SenzorBuilderImpl();
@@ -104,13 +105,13 @@ public class ObradaDatoteka {
                     }
                 } else {
                     String[] zapis = linija.split(delimiter);
-                    System.out.println("CSV Senzor '" + zapis[1] + "' s ID: " + zapis[0] + " nije ispravan te se odbacuje");
+                    pp.prikazi("CSV Senzor '" + zapis[1] + "' s ID: " + zapis[0] + " nije ispravan te se odbacuje");
                     statistika.setBrojNeispravnihSenzora(statistika.getBrojNeispravnihSenzora()+1);
                 }
 
             }
         } catch (IOException ex) {
-            System.out.println("GRESKA KOD CITANJA DATOTEKE SENZORA");
+            pp.prikazi("GRESKA KOD CITANJA DATOTEKE SENZORA");
         }
         return listaSenzora;
     }
@@ -127,10 +128,10 @@ public class ObradaDatoteka {
                 if (linija.split(delimiter).length == duljina) {
                     String[] zapis = linija.split(delimiter);
                     if (listaIdModelaAktuatora.contains(Integer.parseInt(zapis[0]))) {
-                        System.out.println("Aktuator s ID: '" + zapis[0] + "' vec postoji");
+                        pp.prikazi("Aktuator s ID: '" + zapis[0] + "' vec postoji");
                         statistika.setBrojNeispravnihAktuatora(statistika.getBrojNeispravnihAktuatora()+1);
                     } else if (Integer.parseInt(zapis[2]) != 0 && Integer.parseInt(zapis[2]) != 1 && Integer.parseInt(zapis[2]) != 2 || Integer.parseInt(zapis[3]) != 0 && Integer.parseInt(zapis[3]) != 1 && Integer.parseInt(zapis[3]) != 2 && Integer.parseInt(zapis[3]) != 3) {
-                        System.out.println("CSV za Aktuator nije ispravan");
+                        pp.prikazi("CSV za Aktuator nije ispravan");
                         statistika.setBrojNeispravnihAktuatora(statistika.getBrojNeispravnihAktuatora()+1);
                     } else {
                         AktuatorBuilder ab = new AktuatorBuilderImpl();
@@ -148,12 +149,12 @@ public class ObradaDatoteka {
                     }
                 } else {
                     String[] zapis = linija.split(delimiter);
-                    System.out.println("CSV Aktuator '" + zapis[1] + "' s ID: " + zapis[0] + " nije ispravan te se odbacuje");
+                    pp.prikazi("CSV Aktuator '" + zapis[1] + "' s ID: " + zapis[0] + " nije ispravan te se odbacuje");
                     statistika.setBrojNeispravnihAktuatora(statistika.getBrojNeispravnihAktuatora()+1);
                 }
             }
         } catch (IOException ex) {
-            System.out.println("GRESKA KOD CITANJA DATOTEKE AKTUATORA");
+            pp.prikazi("GRESKA KOD CITANJA DATOTEKE AKTUATORA");
         }
         return listaAktuatora;
     }
@@ -189,17 +190,17 @@ public class ObradaDatoteka {
                                         statistika.setBrojDodjeljenihSenzora(statistika.getBrojDodjeljenihSenzora()+1);                                        
                                         break;
                                     } else {
-                                        System.out.println("Senzor '" + senzor.getNazivSenzora() + "' s tipom: " + senzor.getTipSenzora() + " ne odgovara mjestu '" + listaMjesta.get(index).getNazivMjesta() + "' koji ima tip: " + listaMjesta.get(index).getTipMjesta());
+                                        pp.prikazi("Senzor '" + senzor.getNazivSenzora() + "' s tipom: " + senzor.getTipSenzora() + " ne odgovara mjestu '" + listaMjesta.get(index).getNazivMjesta() + "' koji ima tip: " + listaMjesta.get(index).getTipMjesta());
                                         statistika.setBrojNeDodjeljenihSenzora(statistika.getBrojNeDodjeljenihSenzora()+1);
                                     }
                                 }
                             }
                             if (!postoji) {
-                                System.out.println("Senzor s ID modela: " + zapis[3] + " ne postoji te zbog toga nije dodan mjestu");
+                               pp.prikazi("Senzor s ID modela: " + zapis[3] + " ne postoji te zbog toga nije dodan mjestu");
                                 statistika.setBrojNeDodjeljenihSenzora(statistika.getBrojNeDodjeljenihSenzora()+1);
                             }
                         } else {
-                            System.out.println("Senzor s ID modela: " + zapis[3] + " i ID: " + zapis[4] + " nije dodan mjestu jer vise nema mjesta na toj lokaciji");
+                            pp.prikazi("Senzor s ID modela: " + zapis[3] + " i ID: " + zapis[4] + " nije dodan mjestu jer vise nema mjesta na toj lokaciji");
                             statistika.setBrojNeDodjeljenihSenzora(statistika.getBrojNeDodjeljenihSenzora()+1);
                         }
 
@@ -219,24 +220,24 @@ public class ObradaDatoteka {
                                         statistika.setBrojDodjeljenihAktuatora(statistika.getBrojDodjeljenihAktuatora()+1);
                                         break;
                                     } else {
-                                        System.out.println("Aktuator '" + aktuator.getNazivAktuatora() + "' s tipom: " + aktuator.getTipAktuatora() + " ne odgovara mjestu '" + listaMjesta.get(index).getNazivMjesta() + "' koji ima tip: " + listaMjesta.get(index).getTipMjesta());
+                                        pp.prikazi("Aktuator '" + aktuator.getNazivAktuatora() + "' s tipom: " + aktuator.getTipAktuatora() + " ne odgovara mjestu '" + listaMjesta.get(index).getNazivMjesta() + "' koji ima tip: " + listaMjesta.get(index).getTipMjesta());
                                         statistika.setBrojNeDodjeljenihAktuatora(statistika.getBrojNeDodjeljenihAktuatora()+1);
                                     }
                                 }
                             }
                             if (!postoji) {
-                                System.out.println("Aktuator s ID modela: " + zapis[3] + " ne postoji te zbog toga nije dodan mjestu");
+                                pp.prikazi("Aktuator s ID modela: " + zapis[3] + " ne postoji te zbog toga nije dodan mjestu");
                                 statistika.setBrojNeDodjeljenihAktuatora(statistika.getBrojNeDodjeljenihAktuatora()+1);
                             }
                         } else {
-                            System.out.println("Aktuator s ID modela: " + zapis[3] + " i ID: " + zapis[4] + " nije dodan mjestu jer vise nema mjesta na toj lokaciji");
+                            pp.prikazi("Aktuator s ID modela: " + zapis[3] + " i ID: " + zapis[4] + " nije dodan mjestu jer vise nema mjesta na toj lokaciji");
                             statistika.setBrojNeDodjeljenihAktuatora(statistika.getBrojNeDodjeljenihAktuatora()+1);
                         }
                     }
                 }
             }
         } catch (IOException ex) {
-            System.out.println("GRESKA KOD CITANJA DATOTEKE RASPOREDA");
+            pp.prikazi("GRESKA KOD CITANJA DATOTEKE RASPOREDA");
         }
     }
 
@@ -251,12 +252,11 @@ public class ObradaDatoteka {
                     String[] senzori = zapis[2].split(",");
                     Boolean postojiAktuator = false;
                     Boolean postojiSenzor = false;
-                    //1;1002;1000,1001
                     for (Mjesto mjesto : listaMjesta) {
                         for (Aktuator aktuator : mjesto.getAktuatori()) {
                             if (aktuator.getIdAktuatora() == Integer.parseInt(zapis[1])) {
                                 postojiAktuator = true;
-                                for (String idSenzora : senzori) { //1000,1001
+                                for (String idSenzora : senzori) {
                                     for (Senzor senzor : mjesto.getSenzori()) {
                                         if (senzor.getIdSenzora() == Integer.parseInt(idSenzora)) {
                                             postojiSenzor = true;
@@ -271,7 +271,7 @@ public class ObradaDatoteka {
                                         }
                                     }
                                     if (!postojiSenzor) {
-                                        System.out.println("Nije moguce dodjeliti senzor koji ima ID: " + idSenzora + " aktuatoru. Senzor se ne nalazi u mjestu");
+                                        pp.prikazi("Nije moguce dodjeliti senzor koji ima ID: " + idSenzora + " aktuatoru. Senzor se ne nalazi u mjestu");
                                         statistika.setBrojNeDodjeljenihSenzoraAktuatorima(statistika.getBrojNeDodjeljenihSenzoraAktuatorima()+1);
                                     }
                                 }
@@ -279,13 +279,13 @@ public class ObradaDatoteka {
                         }
                     }
                     if (!postojiAktuator) {
-                        System.out.println("Nije moguce dodjeliti senzore aktuatoru koji ima ID: " + zapis[1] + ". Aktuator se ne nalazi u mjestu");
+                        pp.prikazi("Nije moguce dodjeliti senzore aktuatoru koji ima ID: " + zapis[1] + ". Aktuator se ne nalazi u mjestu");
                         statistika.setBrojNeDodjeljenihSenzoraAktuatorima(statistika.getBrojNeDodjeljenihSenzoraAktuatorima()+1);
                     }
                 }
             }
         } catch (IOException ex) {
-            System.out.println("GRESKA KOD CITANJA DATOTEKE RASPOREDA");
+            pp.prikazi("GRESKA KOD CITANJA DATOTEKE RASPOREDA");
         }
     }
 }

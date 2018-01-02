@@ -19,18 +19,19 @@ public class InicijalizacijaSustava {
     GeneratorBrojeva generatorBrojeva = GeneratorBrojeva.getInstance();
     public static int prosjecnaIspravnost;
     Statistika statistika = Statistika.getInstance();
+    PrikazPrograma pp = PrikazPrograma.getInstance();
     
     public void inicijalizirajSve(List<Mjesto> listaMjesta) {
         int statusSenzora = 0;
         int statusAktuatora = 0;
-        System.out.println("");
-        System.out.println(String.format("%45s","I N I C I J A L I Z A C I J A"));
+        pp.prikazi("");
+        pp.prikazi(String.format("%45s","I N I C I J A L I Z A C I J A"));
         for (Mjesto mj : listaMjesta) {
-            System.out.println(String.format("|%-61s|", "============================================================="));
-            System.out.println(String.format("|%-61s|", "MJESTO: " + mj.getNazivMjesta()));
-            System.out.println(String.format("|%-61s|", "-------------------------------------------------------------"));
-            System.out.println(String.format("|%-40s|%-20s|", "Naziv uredaja", "Status uredaja"));
-            System.out.println(String.format("|%-61s|", "-------------------------------------------------------------"));
+            pp.prikazi(String.format("|%-61s|", "============================================================="));
+            pp.prikazi(String.format("|%-61s|", "MJESTO: " + mj.getNazivMjesta()));
+            pp.prikazi(String.format("|%-61s|", "-------------------------------------------------------------"));
+            pp.prikazi(String.format("|%-40s|%-20s|", "Naziv uredaja", "Status uredaja"));
+            pp.prikazi(String.format("|%-61s|", "-------------------------------------------------------------"));
             for (int i = 0; i < mj.getSenzori().size(); i++) {
                 Senzor senzor = mj.getSenzori().get(i);
                 iniPoruka(senzor.getNazivSenzora());
@@ -39,7 +40,7 @@ public class InicijalizacijaSustava {
                     senzor.setBrojGreski(3);
                 }
                 senzor.setStatusSenzora(statusSenzora);
-                System.out.println(String.format("|%-40s|%20d|", "S: " + senzor.getNazivSenzora(), senzor.getStatusSenzora()));
+                pp.prikazi(String.format("|%-40s|%20d|", "S: " + senzor.getNazivSenzora(), senzor.getStatusSenzora()));
             }
             for (int i = 0; i < mj.getAktuatori().size(); i++) {
                 Aktuator aktuator = mj.getAktuatori().get(i);
@@ -49,35 +50,35 @@ public class InicijalizacijaSustava {
                     aktuator.setBrojGreski(3);
                 }
                 aktuator.setStatusAktuatora(statusAktuatora);
-                System.out.println(String.format("|%-40s|%20d|", "A: " + aktuator.getNazivAktuatora(), aktuator.getStatusAktuatora()));
+                pp.prikazi(String.format("|%-40s|%20d|", "A: " + aktuator.getNazivAktuatora(), aktuator.getStatusAktuatora()));
             }
         }
-        System.out.println(String.format("|%-61s|", "============================================================="));
-        System.out.println("");
+        pp.prikazi(String.format("|%-61s|", "============================================================="));
+        pp.prikazi("");
     }
 
     public void inicijalizirajSenzor(Senzor senzor) {
         iniPoruka(senzor.getNazivSenzora());
         int statusSenzora = odgovorPoruka();
         senzor.setStatusSenzora(statusSenzora);
-        System.out.println(String.format("|%-61s|", "-------------------------------------------------------------"));
-        System.out.println(String.format("|%-40s|%-20s|", "Naziv uredaja", "Status uredaja"));
-        System.out.println(String.format("|%-61s|", "-------------------------------------------------------------"));
-        System.out.println(String.format("|%-40s|%20d|", "S: " + senzor.getNazivSenzora(), senzor.getStatusSenzora()));
+        pp.prikazi(String.format("|%-61s|", "-------------------------------------------------------------"));
+        pp.prikazi(String.format("|%-40s|%-20s|", "Naziv uredaja", "Status uredaja"));
+        pp.prikazi(String.format("|%-61s|", "-------------------------------------------------------------"));
+        pp.prikazi(String.format("|%-40s|%20d|", "S: " + senzor.getNazivSenzora(), senzor.getStatusSenzora()));
     }
 
     public void inicijalizirajAktuator(Aktuator aktuator) {
         iniPoruka(aktuator.getNazivAktuatora());
         int statusAktuatora = odgovorPoruka();
         aktuator.setStatusAktuatora(statusAktuatora);
-        System.out.println(String.format("|%-61s|", "-------------------------------------------------------------"));
-        System.out.println(String.format("|%-40s|%-20s|", "Naziv uredaja", "Status uredaja"));
-        System.out.println(String.format("|%-61s|", "-------------------------------------------------------------"));
-        System.out.println(String.format("|%-40s|%20d|", "A: " + aktuator.getNazivAktuatora(), aktuator.getStatusAktuatora()));
+        pp.prikazi(String.format("|%-61s|", "-------------------------------------------------------------"));
+        pp.prikazi(String.format("|%-40s|%-20s|", "Naziv uredaja", "Status uredaja"));
+        pp.prikazi(String.format("|%-61s|", "-------------------------------------------------------------"));
+        pp.prikazi(String.format("|%-40s|%20d|", "A: " + aktuator.getNazivAktuatora(), aktuator.getStatusAktuatora()));
     }
 
     public void iniPoruka(String uredaj) {
-        System.out.println(String.format("|%-61s|", "Ini poruka za '" + uredaj + "'"));
+        pp.prikazi(String.format("|%-61s|", "Ini poruka za '" + uredaj + "'"));
         statistika.setBrojIniPoruka(statistika.getBrojIniPoruka()+1);
     }
 

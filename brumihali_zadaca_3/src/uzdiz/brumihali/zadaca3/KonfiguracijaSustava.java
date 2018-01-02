@@ -110,18 +110,21 @@ public class KonfiguracijaSustava {
                         trajanjeCiklusa = generatorBrojeva.dajSlucaniBroj(1, 17);
                     }
                     ProvjeraMjesta.trajanjeCiklusa = trajanjeCiklusa;
-
-                    System.out.println("broj redaka: " + brojRedaka);
-                    System.out.println("broj stupaca: " + brojStupaca);
-                    System.out.println("broj redaka upis: " + brojRedakaUpis);
-                    System.out.println("prosjecna ispravnost: " + prosjecnaIspravnost);
-                    System.out.println("sjeme: " + sjemeGenerator);
-                    System.out.println("mjesta: " + nazivMjesta);
-                    System.out.println("senzor: " + nazivSenzora);
-                    System.out.println("aktuator: " + nazivAktuatora);
-                    System.out.println("raspored: " + nazivRasporeda);
-                    System.out.println("trajanje: " + trajanjeCiklusa);
-
+                    
+                    PrikazPrograma pp = PrikazPrograma.getInstance();
+                    pp.postavi(brojRedaka, brojStupaca, brojRedakaUpis);
+                    
+                    pp.prikazi("broj redaka: " + brojRedaka);
+                    pp.prikazi("broj stupaca: " + brojStupaca);
+                    pp.prikazi("broj redaka upis: " + brojRedakaUpis);
+                    pp.prikazi("prosjecna ispravnost: " + prosjecnaIspravnost);
+                    pp.prikazi("sjeme: " + sjemeGenerator);
+                    pp.prikazi("mjesta: " + nazivMjesta);
+                    pp.prikazi("senzor: " + nazivSenzora);
+                    pp.prikazi("aktuator: " + nazivAktuatora);
+                    pp.prikazi("raspored: " + nazivRasporeda);
+                    pp.prikazi("trajanje: " + trajanjeCiklusa);
+                    
                     KonfiguracijaSustava konfiguracijaSustava = new KonfiguracijaSustava();
                     konfiguracijaSustava.konfiguriraj(nazivMjesta, nazivSenzora, nazivAktuatora, nazivRasporeda);
                 }
@@ -141,24 +144,13 @@ public class KonfiguracijaSustava {
 
         InicijalizacijaSustava inicijalizacijaSustava = new InicijalizacijaSustava();
         inicijalizacijaSustava.inicijalizirajSve(listaMjesta);
-
+        
+        PrikazPrograma pp = PrikazPrograma.getInstance();
         Komande komande = new Komande(listaMjesta);
-        /*       String komanda0 = "M 2";
-        String komanda1 = "S 1023";
-        String komanda2 = "A 1031";
-        String komanda3 = "S";
-        String komanda4 = "SP";
-        String komanda5 = "VP";
-        String komanda6 = "C 100";
-        String komanda7 = "VF";
-        String komanda8 = "PI 50";
-        String komanda9 = "I";
-        String komanda10 = "H"; */
-
         Scanner userInput = new Scanner(System.in);
         String komanda = "";
-        while (true) {
-            System.out.println("");
+        while (true) {         
+            pp.postaviNaKomande();
             System.out.print("UPISITE KOMANDU: ");
             komanda = userInput.nextLine();
             komande.izvrsiKomande(komanda);

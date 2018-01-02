@@ -37,6 +37,7 @@ public class ProvjeraMjesta extends Thread implements Container {
     GeneratorBrojeva generatorBrojeva = GeneratorBrojeva.getInstance();
     InicijalizacijaSustava inicijalizacijaSustava = new InicijalizacijaSustava();
     Statistika statistika = Statistika.getInstance();
+    PrikazPrograma pp = PrikazPrograma.getInstance();
 
     @Override
     public void interrupt() {
@@ -48,19 +49,19 @@ public class ProvjeraMjesta extends Thread implements Container {
         int i = 1;
         while (brojCiklusa >= 1) {
             vrijemePocetka = System.currentTimeMillis();
-            System.out.println("Provjera mjesta " + i);
+            pp.prikazi("Provjera mjesta " + i);
             for (Iterator iter = getIterator(); iter.hasNext();) {
                 Mjesto mjesto = (Mjesto) iter.next();
-                System.out.println("");
-                System.out.println(String.format("|%-109s|", "-------------------------------------------------------------------------------------------------------------"));
-                System.out.println(String.format("|%-109s|", "MJESTO: " + mjesto.getNazivMjesta()));
+                pp.prikazi("");
+                pp.prikazi(String.format("|%-109s|", "-------------------------------------------------------------------------------------------------------------"));
+                pp.prikazi(String.format("|%-109s|", "MJESTO: " + mjesto.getNazivMjesta()));
                 provjeriStatus(mjesto);
                 ocitajIspisiSenzore(mjesto);
                 ocitajIspisiAktuatore(mjesto);
             }
             try {
-                System.out.println("");
-                System.out.println("");
+                pp.prikazi("");
+                pp.prikazi("");
                 vrijemeZavrsetka = System.currentTimeMillis();
                 trajanjeObrade = vrijemeZavrsetka - vrijemePocetka;
                 long vrijeme = trajanjeCiklusa * 1000 - trajanjeObrade;
@@ -77,9 +78,9 @@ public class ProvjeraMjesta extends Thread implements Container {
     }
 
     public void provjeriStatus(Mjesto mjesto) {
-        System.out.println(String.format("|%-109s|", "======================================== PROVJERA STATUSA UREDAJA ==========================================="));
-        System.out.println(String.format("|%-40s|%-15s|%-15s|%-15s|%-20s|", "Naziv uredaja", "ID uredaja", "Status uredaja", "Broj greski", "Napomena"));
-        System.out.println(String.format("|%-109s|", "-------------------------------------------------------------------------------------------------------------"));
+        pp.prikazi(String.format("|%-109s|", "======================================== PROVJERA STATUSA UREDAJA ==========================================="));
+        pp.prikazi(String.format("|%-40s|%-15s|%-15s|%-15s|%-20s|", "Naziv uredaja", "ID uredaja", "Status uredaja", "Broj greski", "Napomena"));
+        pp.prikazi(String.format("|%-109s|", "-------------------------------------------------------------------------------------------------------------"));
         for (int i = mjesto.getSenzori().size() - 1; i >= 0; i--) {
             Senzor s = mjesto.getSenzori().get(i);
             if (s.getBrojGreski() != 3) {
@@ -95,10 +96,10 @@ public class ProvjeraMjesta extends Thread implements Container {
                 } else {
                     s.setBrojGreski(0);
                 }
-                System.out.println(String.format("|%-40s|%15s|%15s|%15s|%-20s|", "S: " + s.getNazivSenzora(), s.getIdSenzora(), s.getStatusSenzora(), s.getBrojGreski(), "AKTIVAN"));
+                pp.prikazi(String.format("|%-40s|%15s|%15s|%15s|%-20s|", "S: " + s.getNazivSenzora(), s.getIdSenzora(), s.getStatusSenzora(), s.getBrojGreski(), "AKTIVAN"));
                 if (greske == 3) {
-                    System.out.println("");
-                    System.out.println(" - - - - - - - - - - - - ZAMJENA SENZORA - - - - - - - - - - -");
+                    pp.prikazi("");
+                    pp.prikazi(" - - - - - - - - - - - - ZAMJENA SENZORA - - - - - - - - - - -");
                     Senzor noviSenzor = (Senzor) s.clone();
                     noviSenzor.setVrijednostSenzora(0.0f);
                     noviSenzor.setBrojGreski(0);
@@ -114,13 +115,13 @@ public class ProvjeraMjesta extends Thread implements Container {
                     inicijalizacijaSustava.inicijalizirajSenzor(noviSenzor);
                     mjesto.getSenzori().add(new Senzor(noviSenzor)); 
                     statistika.setZamjenaSenzora(statistika.getZamjenaSenzora()+1);
-                    System.out.println(String.format("|%-61s|", "Senzor ID: " + s.getIdSenzora() + " - 3 greske - novi ID: " + noviSenzor.getIdSenzora()));
-                    System.out.println(" - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -");
-                    System.out.println("");
-                    System.out.println(String.format("|%-40s|%15s|%15s|%15s|%-20s|", "S: " + noviSenzor.getNazivSenzora(), noviSenzor.getIdSenzora(), noviSenzor.getStatusSenzora(), noviSenzor.getBrojGreski(), "AKTIVAN"));
+                    pp.prikazi(String.format("|%-61s|", "Senzor ID: " + s.getIdSenzora() + " - 3 greske - novi ID: " + noviSenzor.getIdSenzora()));
+                    pp.prikazi(" - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -");
+                    pp.prikazi("");
+                    pp.prikazi(String.format("|%-40s|%15s|%15s|%15s|%-20s|", "S: " + noviSenzor.getNazivSenzora(), noviSenzor.getIdSenzora(), noviSenzor.getStatusSenzora(), noviSenzor.getBrojGreski(), "AKTIVAN"));
                 }
             } else {
-                System.out.println(String.format("|%-40s|%15s|%15s|%15s|%-20s|", "S: " + s.getNazivSenzora(), s.getIdSenzora(), s.getStatusSenzora(), s.getBrojGreski(), "NEAKTIVAN"));
+                pp.prikazi(String.format("|%-40s|%15s|%15s|%15s|%-20s|", "S: " + s.getNazivSenzora(), s.getIdSenzora(), s.getStatusSenzora(), s.getBrojGreski(), "NEAKTIVAN"));
             }
         }
 
@@ -136,10 +137,10 @@ public class ProvjeraMjesta extends Thread implements Container {
                 } else {
                     a.setBrojGreski(0);
                 }
-                System.out.println(String.format("|%-40s|%15s|%15s|%15s|%-20s|", "A: " + a.getNazivAktuatora(), a.getIdAktuatora(), a.getStatusAktuatora(), a.getBrojGreski(), "AKTIVAN"));
+                pp.prikazi(String.format("|%-40s|%15s|%15s|%15s|%-20s|", "A: " + a.getNazivAktuatora(), a.getIdAktuatora(), a.getStatusAktuatora(), a.getBrojGreski(), "AKTIVAN"));
                 if (greske == 3) {
-                    System.out.println("");
-                    System.out.println(" - - - - - - - - - - - - ZAMJENA AKTUATORA - - - - - - - - - - ");
+                    pp.prikazi("");
+                    pp.prikazi(" - - - - - - - - - - - - ZAMJENA AKTUATORA - - - - - - - - - - ");
                     Aktuator noviAktuator = (Aktuator) a.clone();
                     noviAktuator.setBrojGreski(0);
                     noviAktuator.setVrijednostAktuatora(0.0f);
@@ -149,22 +150,22 @@ public class ProvjeraMjesta extends Thread implements Container {
                     inicijalizacijaSustava.inicijalizirajAktuator(noviAktuator);
                     mjesto.getAktuatori().add(new Aktuator(noviAktuator));
                     statistika.setZamjenaAktuatora(statistika.getZamjenaAktuatora()+1);
-                    System.out.println(String.format("|%-61s|", "Aktuator ID: " + a.getIdAktuatora() + " - 3 greske - novi ID: " + noviAktuator.getIdAktuatora()));
-                    System.out.println(" - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ");
-                    System.out.println("");
-                    System.out.println(String.format("|%-40s|%15s|%15s|%15s|%-20s|", "A: " + noviAktuator.getNazivAktuatora(), noviAktuator.getIdAktuatora(), noviAktuator.getStatusAktuatora(), noviAktuator.getBrojGreski(), "AKTIVAN"));
+                    pp.prikazi(String.format("|%-61s|", "Aktuator ID: " + a.getIdAktuatora() + " - 3 greske - novi ID: " + noviAktuator.getIdAktuatora()));
+                    pp.prikazi(" - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ");
+                    pp.prikazi("");
+                    pp.prikazi(String.format("|%-40s|%15s|%15s|%15s|%-20s|", "A: " + noviAktuator.getNazivAktuatora(), noviAktuator.getIdAktuatora(), noviAktuator.getStatusAktuatora(), noviAktuator.getBrojGreski(), "AKTIVAN"));
                 }
             } else {
-                System.out.println(String.format("|%-40s|%15s|%15s|%15s|%-20s|", "A: " + a.getNazivAktuatora(), a.getIdAktuatora(), a.getStatusAktuatora(), a.getBrojGreski(), "NEAKTIVAN"));
+                pp.prikazi(String.format("|%-40s|%15s|%15s|%15s|%-20s|", "A: " + a.getNazivAktuatora(), a.getIdAktuatora(), a.getStatusAktuatora(), a.getBrojGreski(), "NEAKTIVAN"));
             }
         }
-        System.out.println(String.format("|%-88s|", "============================================================================================================="));
+        pp.prikazi(String.format("|%-88s|", "============================================================================================================="));
     }
 
     public void ocitajIspisiSenzore(Mjesto mjesto) {
-        System.out.println(String.format("|%-109s|", "============================================ OCITANJE SENZORA ==============================================="));
-        System.out.println(String.format("|%-40s|%-15s|%-15s|%-9s|%-9s|%-16s|", "Naziv senzora", "ID senzora", "Status senzora", "MIN", "MAX", "Vrijednost"));
-        System.out.println(String.format("|%-109s|", "-------------------------------------------------------------------------------------------------------------"));
+        pp.prikazi(String.format("|%-109s|", "============================================ OCITANJE SENZORA ==============================================="));
+        pp.prikazi(String.format("|%-40s|%-15s|%-15s|%-9s|%-9s|%-16s|", "Naziv senzora", "ID senzora", "Status senzora", "MIN", "MAX", "Vrijednost"));
+        pp.prikazi(String.format("|%-109s|", "-------------------------------------------------------------------------------------------------------------"));
         for (Senzor s : mjesto.getSenzori()) {
             if (s.getStatusSenzora() == 1) {
                 if (s.getVrstaSenzora() == 0) {
@@ -191,20 +192,20 @@ public class ProvjeraMjesta extends Thread implements Container {
                     s.setVrijednostSenzora(pom);
                 }
                 if (s.getVrstaSenzora() == 0 || s.getVrstaSenzora() == 3) {
-                    System.out.println(String.format("|%-40s|%15s|%15s|%9s|%9s|%16s|", s.getNazivSenzora(), s.getIdSenzora(), s.getStatusSenzora(), s.getMinVrijednostSenzora(), s.getMaxVrijednostSenzora(), s.getVrijednostSenzora().intValue()));
+                    pp.prikazi(String.format("|%-40s|%15s|%15s|%9s|%9s|%16s|", s.getNazivSenzora(), s.getIdSenzora(), s.getStatusSenzora(), s.getMinVrijednostSenzora(), s.getMaxVrijednostSenzora(), s.getVrijednostSenzora().intValue()));
                 } else {
-                    System.out.println(String.format("|%-40s|%15s|%15s|%9s|%9s|%16s|", s.getNazivSenzora(), s.getIdSenzora(), s.getStatusSenzora(), s.getMinVrijednostSenzora(), s.getMaxVrijednostSenzora(), s.getVrijednostSenzora()));
+                    pp.prikazi(String.format("|%-40s|%15s|%15s|%9s|%9s|%16s|", s.getNazivSenzora(), s.getIdSenzora(), s.getStatusSenzora(), s.getMinVrijednostSenzora(), s.getMaxVrijednostSenzora(), s.getVrijednostSenzora()));
                 }
                 statistika.setVrijednostiSenzora(statistika.getVrijednostiSenzora()+1);
             }
         }
-        System.out.println(String.format("|%-109s|", "============================================================================================================="));
+        pp.prikazi(String.format("|%-109s|", "============================================================================================================="));
     }
 
     public void ocitajIspisiAktuatore(Mjesto mjesto) {
-        System.out.println(String.format("|%-109s|", "=========================================================== OCITANJE AKTUATORA ============================================================="));
-        System.out.println(String.format("|%-40s|%-15s|%-18s|%-9s|%-9s|%-13s|%-30s|", "Naziv aktuatora", "ID aktuatora", "Status aktuatora", "MIN", "MAX", "Vrijednost", "ID dodjeljenih senzora"));
-        System.out.println(String.format("|%-109s|", "--------------------------------------------------------------------------------------------------------------------------------------------"));
+        pp.prikazi(String.format("|%-109s|", "=========================================================== OCITANJE AKTUATORA ============================================================="));
+        pp.prikazi(String.format("|%-40s|%-15s|%-18s|%-9s|%-9s|%-13s|%-30s|", "Naziv aktuatora", "ID aktuatora", "Status aktuatora", "MIN", "MAX", "Vrijednost", "ID dodjeljenih senzora"));
+        pp.prikazi(String.format("|%-109s|", "--------------------------------------------------------------------------------------------------------------------------------------------"));
         for (Aktuator a : mjesto.getAktuatori()) {
             String listaDodjeljenihSenzora = "";
             for (Senzor s : a.getPopisSenzora()) {
@@ -216,9 +217,9 @@ public class ProvjeraMjesta extends Thread implements Container {
             if (a.getStatusAktuatora() == 1) {
                 if (a.getState()) {
                     if (a.getVrstaAktuatora() == 0 || a.getVrstaAktuatora() == 3) {
-                        System.out.println(String.format("|%-40s|%15s|%18s|%9s|%9s|%13s|%30s|", a.getNazivAktuatora(), a.getIdAktuatora(), a.getStatusAktuatora(), a.getMinVrijednostAktuatora(), a.getMaxVrijednostAktuatora(), a.getVrijednostAktuatora().intValue(), listaDodjeljenihSenzora));
+                        pp.prikazi(String.format("|%-40s|%15s|%18s|%9s|%9s|%13s|%30s|", a.getNazivAktuatora(), a.getIdAktuatora(), a.getStatusAktuatora(), a.getMinVrijednostAktuatora(), a.getMaxVrijednostAktuatora(), a.getVrijednostAktuatora().intValue(), listaDodjeljenihSenzora));
                     } else {
-                        System.out.println(String.format("|%-40s|%15s|%18s|%9s|%9s|%13s|%30s|", a.getNazivAktuatora(), a.getIdAktuatora(), a.getStatusAktuatora(), a.getMinVrijednostAktuatora(), a.getMaxVrijednostAktuatora(), a.getVrijednostAktuatora(), listaDodjeljenihSenzora));
+                        pp.prikazi(String.format("|%-40s|%15s|%18s|%9s|%9s|%13s|%30s|", a.getNazivAktuatora(), a.getIdAktuatora(), a.getStatusAktuatora(), a.getMinVrijednostAktuatora(), a.getMaxVrijednostAktuatora(), a.getVrijednostAktuatora(), listaDodjeljenihSenzora));
                     }
                     Float staraVrijednost = a.getVrijednostAktuatora();
                     Boolean smjer = a.getSmjer();
@@ -285,12 +286,12 @@ public class ProvjeraMjesta extends Thread implements Container {
                 } else {
                     if (a.getPopisSenzora().size() == 0) {
                         if (a.getVrstaAktuatora() == 0 || a.getVrstaAktuatora() == 3) {
-                            System.out.println(String.format("|%-40s|%15s|%18s|%9s|%9s|%13s|%30s|", a.getNazivAktuatora(), a.getIdAktuatora(), a.getStatusAktuatora(), a.getMinVrijednostAktuatora(), a.getMaxVrijednostAktuatora(), a.getVrijednostAktuatora().intValue(), ""));
+                            pp.prikazi(String.format("|%-40s|%15s|%18s|%9s|%9s|%13s|%30s|", a.getNazivAktuatora(), a.getIdAktuatora(), a.getStatusAktuatora(), a.getMinVrijednostAktuatora(), a.getMaxVrijednostAktuatora(), a.getVrijednostAktuatora().intValue(), ""));
                         } else {
-                            System.out.println(String.format("|%-40s|%15s|%18s|%9s|%9s|%13s|%30s|", a.getNazivAktuatora(), a.getIdAktuatora(), a.getStatusAktuatora(), a.getMinVrijednostAktuatora(), a.getMaxVrijednostAktuatora(), a.getVrijednostAktuatora(), ""));
+                            pp.prikazi(String.format("|%-40s|%15s|%18s|%9s|%9s|%13s|%30s|", a.getNazivAktuatora(), a.getIdAktuatora(), a.getStatusAktuatora(), a.getMinVrijednostAktuatora(), a.getMaxVrijednostAktuatora(), a.getVrijednostAktuatora(), ""));
                         }
                     } else {
-                        System.out.println(String.format("|%-140s|", "AKTUATOR : " + a.getNazivAktuatora() + " S ID: " + a.getIdAktuatora() + " NIJE PRIKAZAN JER SE NITI JEDAN SENZOR NIJE PROMIJENIO (" + listaDodjeljenihSenzora.toString() + ")"));
+                        pp.prikazi(String.format("|%-140s|", "AKTUATOR : " + a.getNazivAktuatora() + " S ID: " + a.getIdAktuatora() + " NIJE PRIKAZAN JER SE NITI JEDAN SENZOR NIJE PROMIJENIO (" + listaDodjeljenihSenzora.toString() + ")"));
                     }
                 }
             }
@@ -299,7 +300,7 @@ public class ProvjeraMjesta extends Thread implements Container {
         for (Senzor s : mjesto.getSenzori()) {
             s.setState(false);
         }
-        System.out.println(String.format("|%-109s|", "============================================================================================================================================"));
+        pp.prikazi(String.format("|%-109s|", "============================================================================================================================================"));
 
     }
 
