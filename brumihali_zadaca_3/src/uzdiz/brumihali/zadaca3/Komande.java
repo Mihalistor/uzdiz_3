@@ -32,7 +32,7 @@ public class Komande {
     }
 
     public void izvrsiKomande(String komanda) {
-        statistika.setBrojIzvrsenihKomandi(statistika.getBrojIzvrsenihKomandi()+1);
+        statistika.setBrojIzvrsenihKomandi(statistika.getBrojIzvrsenihKomandi() + 1);
         String naredba;
         int vrijednost = 0;
         if (komanda.contains(" ")) {
@@ -185,13 +185,13 @@ public class Komande {
         System.out.println("3. Broj ispravnih senzora iz CSV datoteke: " + statistika.getBrojIspravnihSenzora());
         System.out.println("4. Broj neispravnih senzora iz CSV datoteke: " + statistika.getBrojNeispravnihSenzora());
         System.out.println("5. Broj ispravnih aktuatora iz CSV datoteke: " + statistika.getBrojIspravnihAktuatora());
-        System.out.println("6. Broj neispravnih aktuatora iz CSV datoteke: " + statistika.getBrojNeispravnihAktuatora());      
+        System.out.println("6. Broj neispravnih aktuatora iz CSV datoteke: " + statistika.getBrojNeispravnihAktuatora());
         System.out.println("7. Broj ispravnih dodjela senzora mjestima: " + statistika.getBrojDodjeljenihSenzora());
         System.out.println("8. Broj neispravnih dodjela senzora mjestima: " + statistika.getBrojNeDodjeljenihSenzora());
         System.out.println("9. Broj ispravnih dodjela akutuatora mjestima: " + statistika.getBrojDodjeljenihAktuatora());
         System.out.println("10. Broj neispravnih dodjela akutuatora mjestima: " + statistika.getBrojNeDodjeljenihAktuatora());
         System.out.println("11. Broj ispravnih dodjela senzora aktuatorima: " + statistika.getBrojDodjeljenihSenzoraAktuatorima());
-        System.out.println("12. Broj neispravnih dodjela senzora aktuatorima: " + statistika.getBrojNeDodjeljenihSenzoraAktuatorima()); 
+        System.out.println("12. Broj neispravnih dodjela senzora aktuatorima: " + statistika.getBrojNeDodjeljenihSenzoraAktuatorima());
         System.out.println("13. Broj zamjena senzora: " + statistika.getZamjenaSenzora());
         System.out.println("14. Broj zamjena aktuatora: " + statistika.getZamjenaAktuatora());
         System.out.println("15. Broj učitanih vrijednosti senzora: " + statistika.getVrijednostiSenzora());
@@ -207,16 +207,52 @@ public class Komande {
         List<Mjesto> l = new ArrayList<>();
         for (Mjesto mjesto : lista) {
             Mjesto m = new Mjesto(mjesto);
-            l.add(m);
+            m.getSenzori().clear();
+            m.getAktuatori().clear();
+            for (Senzor senzor : mjesto.getSenzori()) {
+                Senzor s = new Senzor(senzor);
+                s.getObservers().clear();
+                m.getSenzori().add(s);
+            }
+            for (Aktuator aktuator : mjesto.getAktuatori()) {
+                Aktuator a = new Aktuator(aktuator);
+                a.getPopisSenzora().clear();
+                m.getAktuatori().add(a);
+            }
+
+            for (Senzor senzor2 : m.getSenzori()) {
+                for (Senzor senzor3 : mjesto.getSenzori()) {
+                    if (senzor3.getIdSenzora().equals(senzor2.getIdSenzora())) {
+                        for (Object o : senzor3.getObservers()) {
+                            Aktuator a = (Aktuator) o;
+                            for (Aktuator ak : m.getAktuatori()) {
+                                if (a.getIdAktuatora().equals(ak.getIdAktuatora())) {
+                                    senzor2.addObserver(ak);
+                                    ak.getPopisSenzora().add(senzor2);
+                                    break;
+                                }
+                            }
+                        }
+                        break;
+                    }
+                }
         }
-        sp.setLista(l);
-        caretaker.addMemento(sp.saveToMemento());
-        System.out.println("Podaci o mjestima i njihovim uređajima su spremljeni");
+        l.add(m);
+    }
+
+    sp.setLista (l);
+
+    caretaker.addMemento (sp.saveToMemento
+
+    ());
+    System.out.println (
+
+"Podaci o mjestima i njihovim uređajima su spremljeni");
     }
 
     public void vratiPodatke() {
         System.out.println("KOMANDA VRAĆANJE PODATAKA");
-        sp.restoreFromMemento(caretaker.getMemento(0));
+        listaMjesta = sp.restoreFromMemento(caretaker.getMemento());
         System.out.println("Podaci o mjestima i njihovim uređajima su vraceni");
     }
 
@@ -231,8 +267,11 @@ public class Komande {
             provjeraMjesta.start();
             try {
                 provjeraMjesta.join();
-            } catch (InterruptedException ex) {
-                Logger.getLogger(Komande.class.getName()).log(Level.SEVERE, null, ex);
+            
+
+} catch (InterruptedException ex) {
+                Logger.getLogger(Komande.class
+.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
@@ -257,8 +296,11 @@ public class Komande {
         System.out.println("Kraj programa za 1 sekundu");
         try {
             sleep(1000);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(Komande.class.getName()).log(Level.SEVERE, null, ex);
+        
+
+} catch (InterruptedException ex) {
+            Logger.getLogger(Komande.class
+.getName()).log(Level.SEVERE, null, ex);
         }
         System.exit(0);
     }

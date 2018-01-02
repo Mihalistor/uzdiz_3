@@ -20,7 +20,7 @@ public class Caretaker {
         savedLists.add(m);
     }
 
-    public Object getMemento(int index) {
-        return savedLists.get(index);
+    public Object getMemento() {
+        return savedLists.get(savedLists.size()-1);
     }
 }

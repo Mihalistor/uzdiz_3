@@ -18,21 +18,19 @@ public class SpremistePodataka {
     private List<Mjesto> listaMjesta = new ArrayList<>();
 
     public void setLista(List<Mjesto> lista) {
-        System.out.println("Postavljam listu");
         this.listaMjesta = lista;
     }
 
     public Object saveToMemento() {
-        System.out.println("spremam u listu");
         return new Memento(listaMjesta);
     }
 
-    public void restoreFromMemento(Object m) {
+    public List<Mjesto> restoreFromMemento(Object m) {
         if (m instanceof Memento) {
             Memento memento = (Memento) m;
-            listaMjesta = memento.getSavedList();
-            System.out.println("Lista dohvacena iz spremnika");
+            return memento.getSavedList();
         }
+        return null;
     }
 
     private static class Memento {
