@@ -23,7 +23,6 @@ import uzdiz.brumihali.zadaca3.iterator.Iterator;
  */
 public class ProvjeraMjesta extends Thread implements Container {
 
-    //private static ProvjeraMjesta instance = new ProvjeraMjesta();
     private List<Mjesto> listaMjesta = new ArrayList<>();
     private List<Senzor> listaSenzora = new ArrayList<>();
     private List<Aktuator> listaAktuatora = new ArrayList<>();

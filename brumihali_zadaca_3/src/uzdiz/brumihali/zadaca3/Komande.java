@@ -92,9 +92,9 @@ public class Komande {
                     }
                     pp.prikazi(String.format("|%-143s|", "-----------------------------------------------------------------------------------------------------------------------------------------------"));
                 }
-                pp.prikazi(String.format("|%-170s|", "============================================================================== ISPIS AKTUATORA ==============================================================================="));
-                pp.prikazi(String.format("|%-40s|%-15s|%-18s|%-9s|%-9s|%-13s|%-30s|%-12s|%-20s|", "Naziv aktuatora", "ID aktuatora", "Status aktuatora", "MIN", "MAX", "Vrijednost", "ID dodjeljenih senzora", "Broj greski", "Napomena"));
-                pp.prikazi(String.format("|%-170s|", "------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"));
+                pp.prikazi(String.format("|%1s|", "================================================================= ISPIS AKTUATORA ======================================================================"));
+                pp.prikazi(String.format("|%-40s|%-10s|%-10s|%-9s|%-9s|%-13s|%-30s|%12s|%-11s|", "Naziv aktuatora", "ID", "Status", "MIN", "MAX", "Vrijednost", "ID dodjeljenih senzora", "Broj greski", "Napomena"));
+                pp.prikazi(String.format("|%-150s|", "--------------------------------------------------------------------------------------------------------------------------------------------------------"));
                 for (Aktuator a : mjesto.getAktuatori()) {
                     String popisSenzora = "";
                     for (Senzor s : a.getPopisSenzora()) {
@@ -102,11 +102,11 @@ public class Komande {
                     }
                     popisSenzora = popisSenzora.substring(0, popisSenzora.lastIndexOf(","));
                     if (a.getBrojGreski() == 3) {
-                        pp.prikazi(String.format("|%-40s|%15s|%18s|%9s|%9s|%13s|%30s|%12s|%-20s|", a.getNazivAktuatora(), a.getIdAktuatora(), a.getStatusAktuatora(), a.getMinVrijednostAktuatora(), a.getMaxVrijednostAktuatora(), a.getVrijednostAktuatora().intValue(), popisSenzora, a.getBrojGreski(), "NEAKTIVAN"));
+                        pp.prikazi(String.format("|%-40s|%10s|%10s|%9s|%9s|%13s|%30s|%12s|%-11s|", a.getNazivAktuatora(), a.getIdAktuatora(), a.getStatusAktuatora(), a.getMinVrijednostAktuatora(), a.getMaxVrijednostAktuatora(), a.getVrijednostAktuatora().intValue(), popisSenzora, a.getBrojGreski(), "NEAKTIVAN"));
                     } else {
-                        pp.prikazi(String.format("|%-40s|%15s|%18s|%9s|%9s|%13s|%30s|%12s|%-20s|", a.getNazivAktuatora(), a.getIdAktuatora(), a.getStatusAktuatora(), a.getMinVrijednostAktuatora(), a.getMaxVrijednostAktuatora(), a.getVrijednostAktuatora().intValue(), popisSenzora, a.getBrojGreski(), "AKTIVAN"));
+                        pp.prikazi(String.format("|%-40s|%10s|%10s|%9s|%9s|%13s|%30s|%12s|%-11s|", a.getNazivAktuatora(), a.getIdAktuatora(), a.getStatusAktuatora(), a.getMinVrijednostAktuatora(), a.getMaxVrijednostAktuatora(), a.getVrijednostAktuatora().intValue(), popisSenzora, a.getBrojGreski(), "AKTIVAN"));
                     }
-                    pp.prikazi(String.format("|%-170s|", "------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"));
+                    pp.prikazi(String.format("|%-150s|", "--------------------------------------------------------------------------------------------------------------------------------------------------------"));
                 }
             }
         }
@@ -158,17 +158,17 @@ public class Komande {
                     }
                     popisSenzora = popisSenzora.substring(0, popisSenzora.lastIndexOf(","));
                     pp.prikazi("");
-                    pp.prikazi(String.format("|%-170s|", "------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"));
-                    pp.prikazi(String.format("|%-174s|", "MJESTO: " + mjesto.getNazivMjesta()));
-                    pp.prikazi(String.format("|%-170s|", "============================================================================== ISPIS AKTUATORA ==============================================================================="));
-                    pp.prikazi(String.format("|%-40s|%-15s|%-18s|%-9s|%-9s|%-13s|%-30s|%12s|%-20s|", "Naziv aktuatora", "ID aktuatora", "Status aktuatora", "MIN", "MAX", "Vrijednost", "ID dodjeljenih senzora", "Broj greski", "Napomena"));
-                    pp.prikazi(String.format("|%-170s|", "------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"));
+                    pp.prikazi(String.format("|%1s|", "--------------------------------------------------------------------------------------------------------------------------------------------------------"));
+                    pp.prikazi(String.format("|%-152s|", "MJESTO: " + mjesto.getNazivMjesta()));
+                    pp.prikazi(String.format("|%1s|", "================================================================= ISPIS AKTUATORA ======================================================================"));
+                    pp.prikazi(String.format("|%-40s|%-10s|%-10s|%-9s|%-9s|%-13s|%-30s|%12s|%-11s|", "Naziv aktuatora", "ID", "Status", "MIN", "MAX", "Vrijednost", "ID dodjeljenih senzora", "Broj greski", "Napomena"));
+                    pp.prikazi(String.format("|%-150s|", "--------------------------------------------------------------------------------------------------------------------------------------------------------"));
                     if (a.getBrojGreski() == 3) {
-                        pp.prikazi(String.format("|%-40s|%15s|%18s|%9s|%9s|%13s|%30s|%12s|%-20s|", a.getNazivAktuatora(), a.getIdAktuatora(), a.getStatusAktuatora(), a.getMinVrijednostAktuatora(), a.getMaxVrijednostAktuatora(), a.getVrijednostAktuatora().intValue(), popisSenzora, a.getBrojGreski(), "NEAKTIVAN"));
+                        pp.prikazi(String.format("|%-40s|%10s|%10s|%9s|%9s|%13s|%30s|%12s|%-11s|", a.getNazivAktuatora(), a.getIdAktuatora(), a.getStatusAktuatora(), a.getMinVrijednostAktuatora(), a.getMaxVrijednostAktuatora(), a.getVrijednostAktuatora().intValue(), popisSenzora, a.getBrojGreski(), "NEAKTIVAN"));
                     } else {
-                        pp.prikazi(String.format("|%-40s|%15s|%18s|%9s|%9s|%13s|%30s|%12s|%-20s|", a.getNazivAktuatora(), a.getIdAktuatora(), a.getStatusAktuatora(), a.getMinVrijednostAktuatora(), a.getMaxVrijednostAktuatora(), a.getVrijednostAktuatora().intValue(), popisSenzora, a.getBrojGreski(), "AKTIVAN"));
+                        pp.prikazi(String.format("|%-40s|%10s|%10s|%9s|%9s|%13s|%30s|%12s|%-11s|", a.getNazivAktuatora(), a.getIdAktuatora(), a.getStatusAktuatora(), a.getMinVrijednostAktuatora(), a.getMaxVrijednostAktuatora(), a.getVrijednostAktuatora().intValue(), popisSenzora, a.getBrojGreski(), "AKTIVAN"));
                     }
-                    pp.prikazi(String.format("|%-170s|", "------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"));
+                    pp.prikazi(String.format("|%-150s|", "--------------------------------------------------------------------------------------------------------------------------------------------------------"));
                     break;
                 }
             }
