@@ -6,7 +6,6 @@
 package uzdiz.brumihali.zadaca3;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
@@ -23,7 +22,6 @@ import uzdiz.brumihali.zadaca3.iterator.Iterator;
  */
 public class ProvjeraMjesta extends Thread implements Container {
 
-    private List<Mjesto> listaMjesta = new ArrayList<>();
     private List<Senzor> listaSenzora = new ArrayList<>();
     private List<Aktuator> listaAktuatora = new ArrayList<>();
     public static int trajanjeCiklusa = 0;
@@ -340,14 +338,6 @@ public class ProvjeraMjesta extends Thread implements Container {
         this.brojCiklusa = brojCiklusa;
     }
 
-    public List<Mjesto> getListaMjesta() {
-        return listaMjesta;
-    }
-
-    public void setListaMjesta(List<Mjesto> listaMjesta) {
-        this.listaMjesta = listaMjesta;
-    }
-
     public List<Integer> getListaIdUredaja() {
         return listaIdUredaja;
     }
@@ -367,7 +357,7 @@ public class ProvjeraMjesta extends Thread implements Container {
 
         @Override
         public boolean hasNext() {
-            if (index < listaMjesta.size()) {
+            if (index < Komande.listaMjesta.size()) {
                 return true;
             }
             return false;
@@ -376,7 +366,7 @@ public class ProvjeraMjesta extends Thread implements Container {
         @Override
         public Object next() {
             if (this.hasNext()) {
-                return listaMjesta.get(index++);
+                return Komande.listaMjesta.get(index++);
             }
             return null;
         }

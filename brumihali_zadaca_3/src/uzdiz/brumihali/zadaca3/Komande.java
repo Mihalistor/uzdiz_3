@@ -10,6 +10,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import uzdiz.brumihali.zadaca3.chain.CommandHandler;
+import uzdiz.brumihali.zadaca3.chain.IspisAktuatora;
+import uzdiz.brumihali.zadaca3.chain.IspisHelp;
+import uzdiz.brumihali.zadaca3.chain.IspisMjesta;
+import uzdiz.brumihali.zadaca3.chain.IspisSenzora;
+import uzdiz.brumihali.zadaca3.chain.IspisStatistike;
+import uzdiz.brumihali.zadaca3.chain.Izlaz;
+import uzdiz.brumihali.zadaca3.chain.IzvrsiDretvu;
+import uzdiz.brumihali.zadaca3.chain.PostavljanjeIspravnosti;
+import uzdiz.brumihali.zadaca3.chain.SpremanjePodataka;
+import uzdiz.brumihali.zadaca3.chain.VlastitaFunkcionalnost;
+import uzdiz.brumihali.zadaca3.chain.VracanjePodataka;
 import uzdiz.brumihali.zadaca3.memento.Caretaker;
 import uzdiz.brumihali.zadaca3.memento.SpremistePodataka;
 import uzdiz.brumihali.zadaca3.podaci.Aktuator;
@@ -22,21 +34,54 @@ import uzdiz.brumihali.zadaca3.podaci.Senzor;
  */
 public class Komande {
 
-    private List<Mjesto> listaMjesta = new ArrayList<>();
+    public static List<Mjesto> listaMjesta = new ArrayList<>();
     Statistika statistika = Statistika.getInstance();
     Caretaker caretaker = new Caretaker();
     SpremistePodataka sp = new SpremistePodataka();
     PrikazPrograma pp = PrikazPrograma.getInstance();
 
+
     public Komande(List<Mjesto> listaMjesta) {
         this.listaMjesta = listaMjesta;
     }
+    
+    public static CommandHandler postaviChain(){
+        CommandHandler ispisMjesta = new IspisMjesta();
+        CommandHandler ispisSenzora = new IspisSenzora();
+        CommandHandler ispisAktuatora = new IspisAktuatora();
+        CommandHandler ispisStatistika = new IspisStatistike();
+        CommandHandler spremanjePodataka = new SpremanjePodataka();
+        CommandHandler vracanjePodataka = new VracanjePodataka();
+        CommandHandler izvrsiDretvu = new IzvrsiDretvu();
+        CommandHandler vlastitaFunkcionalnost = new VlastitaFunkcionalnost();
+        CommandHandler postavljanjeIspravnosti = new PostavljanjeIspravnosti();
+        CommandHandler ispisHelp = new IspisHelp();
+        CommandHandler izlaz = new Izlaz();
 
-    public void izvrsiKomande(String komanda) {
+        ispisMjesta.setSuccessor(ispisSenzora);
+        ispisSenzora.setSuccessor(ispisAktuatora);
+        ispisAktuatora.setSuccessor(ispisStatistika);
+        ispisStatistika.setSuccessor(spremanjePodataka);
+        spremanjePodataka.setSuccessor(vracanjePodataka);
+        vracanjePodataka.setSuccessor(izvrsiDretvu);
+        izvrsiDretvu.setSuccessor(vlastitaFunkcionalnost);
+        vlastitaFunkcionalnost.setSuccessor(postavljanjeIspravnosti);
+        postavljanjeIspravnosti.setSuccessor(ispisHelp);
+        ispisHelp.setSuccessor(izlaz);      
+        return ispisMjesta;
+    }
+
+    public void izvrsiKomande(String komanda) {     
+        CommandHandler ch = postaviChain();
+        ch.setCaretaker(caretaker);
+        ch.setSp(sp);
+        ch.handleRequest(komanda);
+        
         statistika.setBrojIzvrsenihKomandi(statistika.getBrojIzvrsenihKomandi() + 1);
-        String naredba;
-        int vrijednost = 0;
-        if (komanda.contains(" ")) {
+    }
+        //String naredba;
+        //int vrijednost = 0;
+        /*if (komanda.contains(" ")) {
             naredba = komanda.substring(0, komanda.indexOf(" "));
             vrijednost = Integer.parseInt(komanda.substring(komanda.indexOf(" ") + 1, komanda.length()));
         } else {
@@ -259,7 +304,6 @@ public class Komande {
             pp.prikazi("Broj ciklusa dretve mora biti u intervalu od 1 do 100. Ponovite komandu");
         } else {
             ProvjeraMjesta provjeraMjesta = new ProvjeraMjesta();
-            provjeraMjesta.setListaMjesta(listaMjesta);
             provjeraMjesta.setBrojCiklusa(brojCiklusa);
             provjeraMjesta.start();
             try {
@@ -314,13 +358,5 @@ public class Komande {
         pp.prikazi("H - pomoc, ispis dopustenih komandi i njihov opis");
         pp.prikazi("I - izlaz.");
     }
-
-    public List<Mjesto> getListaMjesta() {
-        return listaMjesta;
-    }
-
-    public void setListaMjesta(List<Mjesto> listaMjesta) {
-        this.listaMjesta = listaMjesta;
-    }
-
+*/
 }

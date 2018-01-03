@@ -37,7 +37,7 @@ public class KonfiguracijaSustava {
         String nazivAktuatora = null;
         String nazivRasporeda = null;
         int trajanjeCiklusa = -1;
-
+        
         try {
             if (args.length == 1) {
                 if (args[0].equals("--help")) {
@@ -141,12 +141,12 @@ public class KonfiguracijaSustava {
         List<Aktuator> listaAktuatora = obradaDatoteka.dohvatiAktuatore(nazivAktuatora);
         obradaDatoteka.dodjeliUredaje(nazivRasporeda);
         obradaDatoteka.dodjeliSenzoreAktuatorima(nazivRasporeda);
-
+        Komande komande = new Komande(listaMjesta);
         InicijalizacijaSustava inicijalizacijaSustava = new InicijalizacijaSustava();
-        inicijalizacijaSustava.inicijalizirajSve(listaMjesta);
+        inicijalizacijaSustava.inicijalizirajSve(Komande.listaMjesta);
         
         PrikazPrograma pp = PrikazPrograma.getInstance();
-        Komande komande = new Komande(listaMjesta);
+        
         Scanner userInput = new Scanner(System.in);
         String komanda = "";
         while (true) {         
