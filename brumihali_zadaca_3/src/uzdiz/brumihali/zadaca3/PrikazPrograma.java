@@ -61,7 +61,7 @@ public class PrikazPrograma {
         while (broj >= 0) {
             postavi(x, 0);
             System.out.print(ANSI_ESC + "37m");
-            System.out.print("                            ");
+            System.out.print("                                                      ");
             x++;
             broj--;
         }

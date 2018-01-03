@@ -5,11 +5,8 @@
  */
 package uzdiz.brumihali.zadaca3;
 
-import static java.lang.Thread.sleep;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import uzdiz.brumihali.zadaca3.chain.CommandHandler;
 import uzdiz.brumihali.zadaca3.chain.IspisAktuatora;
 import uzdiz.brumihali.zadaca3.chain.IspisHelp;
@@ -24,9 +21,7 @@ import uzdiz.brumihali.zadaca3.chain.VlastitaFunkcionalnost;
 import uzdiz.brumihali.zadaca3.chain.VracanjePodataka;
 import uzdiz.brumihali.zadaca3.memento.Caretaker;
 import uzdiz.brumihali.zadaca3.memento.SpremistePodataka;
-import uzdiz.brumihali.zadaca3.podaci.Aktuator;
 import uzdiz.brumihali.zadaca3.podaci.Mjesto;
-import uzdiz.brumihali.zadaca3.podaci.Senzor;
 
 /**
  *

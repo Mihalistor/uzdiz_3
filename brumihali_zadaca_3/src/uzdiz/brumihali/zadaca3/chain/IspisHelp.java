@@ -26,7 +26,7 @@ public class IspisHelp extends CommandHandler {
             pp.prikazi("SP - spremi podatke (mjesta, uredaja)");
             pp.prikazi("VP - vrati spremljene podatke (mjesta, uredaja)");
             pp.prikazi("C n - izvrsavanje n ciklusa dretve (1-100)");
-            pp.prikazi("VF [argumenti] - izvrsavanje vlastite funkcionalnosti, po potrebni moguci su argumenti");
+            pp.prikazi("VF x - izvrsavanje vlastite funkcionalnosti, x predstavlja ID");
             pp.prikazi("PI n - prosjecni % ispravnosti uredaja (0-100)");
             pp.prikazi("H - pomoc, ispis dopustenih komandi i njihov opis");
             pp.prikazi("I - izlaz.");

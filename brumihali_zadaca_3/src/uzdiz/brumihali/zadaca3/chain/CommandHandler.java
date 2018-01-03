@@ -5,10 +5,8 @@
  */
 package uzdiz.brumihali.zadaca3.chain;
 
-import java.util.List;
 import uzdiz.brumihali.zadaca3.memento.Caretaker;
 import uzdiz.brumihali.zadaca3.memento.SpremistePodataka;
-import uzdiz.brumihali.zadaca3.podaci.Mjesto;
 
 /**
  *
